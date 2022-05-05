@@ -1,0 +1,1 @@
+# netcore-postgresql-stack
