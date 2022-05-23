@@ -1,25 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datas.Entities;
 
+[Table("groups")]
 public class Group
 {
-    public long UserId { get; set; }
+    [Key]
+    [Required]
+    [Column("group_id")]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public long GroupId { get; set; }
+
     [Required]
     [StringLength(256)]
-    public string UserName { get; set; }
+    [Column("group_name")]
+    public string GroupName { get; set; }
+
     [Required]
     [StringLength(256)]
-    public long Email { get; set; }
-    public bool EmailConfirmed { get; set; }
-    public string PasswordHash { get; set; }
-    [Required]
-    public Guid SecurityStamp { get; set; }
-    [StringLength(12)]
-    public string PhoneNumber { get; set; }
+    [Column("is_actived")]
+    public bool IsActived { get; set; }
 }

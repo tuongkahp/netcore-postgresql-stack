@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datas.Entities;
 
-[Table("user_roles")]
-public class UserRole
+[Table("group_roles")]
+public class GroupRole
 {
     [Required]
-    [Column("user_id")]
-    public long UserId { get; set; }
+    [Column("group_id")]
+    public long GroupId { get; set; }
 
     [Required]
     [Column("role_id")]

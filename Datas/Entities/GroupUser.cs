@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datas.Entities;
 
+[Table("group_users")]
 public class GroupUser
 {
+    [Required]
+    [Column("group_id")]
+    public long GroupId { get; set; }
+
+    [Required]
+    [Column("user_id")]
     public long UserId { get; set; }
-    [Required]
-    [StringLength(256)]
-    public string UserName { get; set; }
-    [Required]
-    [StringLength(256)]
-    public long Email { get; set; }
-    public bool EmailConfirmed { get; set; }
-    public string PasswordHash { get; set; }
-    [Required]
-    public Guid SecurityStamp { get; set; }
-    [StringLength(12)]
-    public string PhoneNumber { get; set; }
 }

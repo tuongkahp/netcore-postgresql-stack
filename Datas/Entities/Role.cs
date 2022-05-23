@@ -1,25 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Datas.Entities;
 
+[Table("roles")]
 public class Role
 {
-    public long UserId { get; set; }
+    [Required]
+    [Column("role_id")]
+    public int RoleId { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
     [Required]
     [StringLength(256)]
-    public string UserName { get; set; }
+    [Column("role_name")]
+    public string RoleName { get; set; }
+
     [Required]
     [StringLength(256)]
-    public long Email { get; set; }
-    public bool EmailConfirmed { get; set; }
-    public string PasswordHash { get; set; }
-    [Required]
-    public Guid SecurityStamp { get; set; }
-    [StringLength(12)]
-    public string PhoneNumber { get; set; }
+    [Column("is_default")]
+    public bool IsDefault { get; set; }
 }
