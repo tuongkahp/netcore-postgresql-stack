@@ -32,7 +32,7 @@ public class User
     public string PasswordHash { get; set; }
 
     [Column("security_stamp")]
-    [StringLength(32)]
+    [StringLength(36)]
     public string SecurityStamp { get; set; }
 
     [StringLength(12)]

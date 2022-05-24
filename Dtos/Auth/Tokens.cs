@@ -1,4 +1,4 @@
-﻿namespace Dtos.Users;
+﻿namespace Dtos.Auth;
 
 public class Tokens
 {

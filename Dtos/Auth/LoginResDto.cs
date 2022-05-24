@@ -1,6 +1,6 @@
 ﻿using Dtos.Users;
 
-namespace Dtos.Response;
+namespace Dtos.Auth;
 
 public class LoginResDto : ResponseBase<LoginResDto>
 {

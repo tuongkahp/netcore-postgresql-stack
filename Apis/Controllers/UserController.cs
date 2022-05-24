@@ -1,5 +1,6 @@
 using Api.Services;
 using Dtos;
+using Dtos.Auth;
 using Dtos.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,23 +14,23 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserManagementService _userManagementService;
+    private readonly IUserService _userService;
 
     public UserController(
         ILogger<UserController> logger,
         IUnitOfWork unitOfWork,
-        IUserManagementService userManagementService
+        IUserService userManagementService
         )
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
-        _userManagementService = userManagementService;
+        _userService = userManagementService;
     }
 
     [HttpGet]
-    public IActionResult Get(string page, string count)
+    public GetUsersResDto Get(int page, int count)
     {
-        return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
+        return _userService.GetUsers(page, count);
     }
 
     [HttpGet]
@@ -39,26 +40,23 @@ public class UserController : ControllerBase
         return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
     }
 
-    
-
     [HttpPost]
     public ResponseDto AddUser(RegisterUserDto registerUserDto)
     {
-        return _userManagementService.RegisterUser(registerUserDto);
+        return new ResponseDto();
     }
 
     [HttpPut]
     public IActionResult EditUser(LoginDto loginDto)
     {
-        return Ok(_userManagementService.Login(loginDto));
+        return Ok();
     }
 
     [HttpDelete]
     public IActionResult DeleteUser(LoginDto loginDto)
     {
-        return Ok(_userManagementService.Login(loginDto));
+        return Ok();
     }
-
 
     [HttpGet]
     [Route("{userId?}/roles")]

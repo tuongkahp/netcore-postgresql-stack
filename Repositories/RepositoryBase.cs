@@ -14,7 +14,7 @@ public interface IRepositoryBase<TEntity> : IDisposable where TEntity : class
     int Delete(int Id);
     int DeleteRange(List<TEntity> items);
     int Save();
-    TEntity GetById(int Id);
+    //TEntity GetById(int Id);
     IQueryable<TEntity> GetAll();
 }
 
@@ -67,10 +67,10 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
         return -1;
     }
 
-    public virtual TEntity GetById(int Id)
-    {
-        return _dbContext.Set<TEntity>().Find(Id);
-    }
+    //public virtual TEntity GetById(int Id)
+    //{
+    //    return _dbContext.Set<TEntity>().Find(Id);
+    //}
 
     public virtual IQueryable<TEntity> GetAll()
     {

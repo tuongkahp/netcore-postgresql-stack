@@ -1,7 +1,7 @@
 using Api.Services;
 using Dtos;
+using Dtos.Auth;
 using Dtos.Users;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
 
@@ -13,23 +13,23 @@ public class GroupController : ControllerBase
 {
     private readonly ILogger<GroupController> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserManagementService _userManagementService;
+    private readonly IUserService _userService;
 
     public GroupController(
         ILogger<GroupController> logger,
         IUnitOfWork unitOfWork,
-        IUserManagementService userManagementService
+        IUserService userService
         )
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
-        _userManagementService = userManagementService;
+        _userService = userService;
     }
 
     [HttpGet]
-    public IActionResult Get(string page, string count)
+    public GetUsersResDto Get(int page, int count)
     {
-        return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
+        return _userService.GetUsers(page, count);
     }
 
     [HttpGet]
@@ -42,32 +42,32 @@ public class GroupController : ControllerBase
     [HttpPost]
     public ResponseDto AddUser(RegisterUserDto registerUserDto)
     {
-        return _userManagementService.RegisterUser(registerUserDto);
+        return new();
     }
 
     [HttpPut]
     public IActionResult EditUser(LoginDto loginDto)
     {
-        return Ok(_userManagementService.Login(loginDto));
+        return Ok();
     }
 
     [HttpDelete]
     public IActionResult DeleteUser(LoginDto loginDto)
     {
-        return Ok(_userManagementService.Login(loginDto));
+        return Ok();
     }
 
     [HttpGet]
     [Route("{groupId?}/users")]
     public IActionResult GetGroupRoles(string groupId)
     {
-        return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
+        return Ok();
     }
 
     [HttpGet]
     [Route("{groupId?}/roles")]
     public IActionResult GetGroupUsers(string groupId)
     {
-        return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
+        return Ok();
     }
 }

@@ -84,7 +84,7 @@ namespace Apis.Migrations
                     email = table.Column<string>(type: "text", nullable: false),
                     email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
                     password_hash = table.Column<string>(type: "text", nullable: false),
-                    security_stamp = table.Column<string>(type: "character varying(32)", maxLength: 32, nullable: false),
+                    security_stamp = table.Column<string>(type: "character varying(32)", maxLength: 36, nullable: false),
                     phone_number = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: false)
                 },
                 constraints: table =>
