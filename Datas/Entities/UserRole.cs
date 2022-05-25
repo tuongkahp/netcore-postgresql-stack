@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datas.Entities;
@@ -12,5 +13,6 @@ public class UserRole
 
     [Required]
     [Column("role_id")]
+    //[Index(IsUnique = false, Name = "")]
     public int RoleId { get; set; }
 }

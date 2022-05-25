@@ -127,6 +127,6 @@
     <value>Phone number is invalid</value>
   </data>
   <data name="UserNameInvalid" xml:space="preserve">
-    <value>UserName is invalid</value>
+    <value>Username is invalid</value>
   </data>
 </root>

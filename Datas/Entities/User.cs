@@ -14,7 +14,7 @@ public class User
     [Required]
     [StringLength(256)]
     [Column("user_name")]
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     [Required]
     [StringLength(256)]

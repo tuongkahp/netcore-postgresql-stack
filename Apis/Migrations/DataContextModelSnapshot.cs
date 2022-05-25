@@ -250,7 +250,7 @@ namespace Apis.Migrations
                         .HasColumnType("character varying(32)")
                         .HasColumnName("security_stamp");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)")
@@ -270,7 +270,7 @@ namespace Apis.Migrations
                             PasswordHash = "rA59A3gXCU6eC0RB+brjIJ1nsC+khJFwZfcbFhCaGng=",
                             PhoneNumber = "",
                             SecurityStamp = "123456",
-                            UserName = "admin"
+                            Username = "admin"
                         });
                 });
 

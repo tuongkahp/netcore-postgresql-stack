@@ -52,7 +52,7 @@ public class AuthService : IAuthService
 
         try
         {
-            var user = _unitOfWork.Users.GetBy(x => x.UserName == registerUserDto.UserName).FirstOrDefault();
+            var user = _unitOfWork.Users.GetBy(x => x.Username == registerUserDto.Username).FirstOrDefault();
 
             if (user != null)
             {
@@ -78,7 +78,7 @@ public class AuthService : IAuthService
 
         try
         {
-            var user = _unitOfWork.Users.GetBy(x => x.UserName == loginDto.UserName).FirstOrDefault();
+            var user = _unitOfWork.Users.GetBy(x => x.Username == loginDto.Username).FirstOrDefault();
 
             if (user == null
                 || !PasswordHelper.Equals(loginDto.Password, user.PasswordHash, user.SecurityStamp))
@@ -136,11 +136,11 @@ public class AuthService : IAuthService
             {
                 UserId = user.UserId,
                 Email = user.Email,
-                UserName = user.UserName,
+                Username = user.Username,
                 PhoneNumber = user.PhoneNumber,
                 ListRoles = _unitOfWork.Users.GetRoles(user.UserId).Select(x => x.RoleName).ToList()
             };
-          
+
             return res.Success();
         }
         catch (Exception ex)
@@ -156,14 +156,13 @@ public class AuthService : IAuthService
         var tokenKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
         var lstRoles = _unitOfWork.Users.GetRoles(users.UserId);
 
+        var lstClaims = lstRoles.Select(x => new Claim(ClaimTypes.Role, x.RoleName)).ToList();
+        lstClaims.Add(new Claim(ConstJwtCode.UserId, users.UserId.ToString()));
+        lstClaims.Add(new Claim(ClaimTypes.Name, users.FullName));
+
         var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ConstJwtCode.UserId, users.UserId.ToString()),
-                new Claim(ClaimTypes.Name, users.FullName),
-                new Claim(ClaimTypes.Role, string.Join(",", lstRoles.Select(x=>x.RoleName)))
-            }),
+        {   
+            Subject = new ClaimsIdentity(lstClaims),
             Expires = DateTime.UtcNow.AddMinutes(10),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
         };

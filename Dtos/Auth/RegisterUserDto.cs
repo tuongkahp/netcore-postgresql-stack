@@ -8,7 +8,7 @@ public class RegisterUserDto
 
     [Required]
     [StringLength(256)]
-    public string UserName
+    public string Username
     {
         get { return _userName; }
         set { _userName = value?.Trim()?.ToLower(); }

@@ -29,7 +29,7 @@ public class DataContext : DbContext
             new User 
             {
                 UserId = 1, 
-                UserName = "admin", 
+                Username = "admin", 
                 PasswordHash = PasswordHelper.GenerateHash("admin", "123456"), 
                 SecurityStamp = "123456", 
                 Email = "", 
