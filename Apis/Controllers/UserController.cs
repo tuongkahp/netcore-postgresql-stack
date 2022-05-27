@@ -28,14 +28,14 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public GetUsersResDto Get(int page, int count)
+    public GetUsersResDto GetUsers(int page, int count)
     {
         return _userService.GetUsers(page, count);
     }
 
     [HttpGet]
     [Route("{userId?}")]
-    public IActionResult Get(string userId)
+    public IActionResult GetUserDetail(string userId)
     {
         return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
     }
@@ -47,13 +47,15 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public IActionResult EditUser(LoginDto loginDto)
+    [Route("{userId?}")]
+    public IActionResult EditUser([FromBody] LoginDto loginDto, [FromQuery] long userId)
     {
         return Ok();
     }
 
     [HttpDelete]
-    public IActionResult DeleteUser(LoginDto loginDto)
+    [Route("{userId?}")]
+    public IActionResult DeleteUser([FromBody] LoginDto loginDto, [FromQuery] long userId)
     {
         return Ok();
     }
