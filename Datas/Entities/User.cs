@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Constants.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Datas.Entities;
@@ -38,4 +39,13 @@ public class User
     [StringLength(12)]
     [Column("phone_number")]
     public string PhoneNumber { get; set; }
+
+    [Required]
+    [Column("created_date")]
+    [Timestamp]
+    public DateTime CreatedDate { get; set; }
+
+    [Required]
+    [Column("status")]
+    public UserStatus Status { get; set; }
 }

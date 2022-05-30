@@ -35,7 +35,9 @@ public class DataContext : DbContext
                 Email = "", 
                 EmailConfirmed = true, 
                 PhoneNumber = "" ,
-                FullName = "Admin"
+                FullName = "Admin",
+                CreatedDate = DateTime.Now,
+                Status = Constants.Enums.UserStatus.Active
             }
         });
 
