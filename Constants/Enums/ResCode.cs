@@ -9,4 +9,6 @@ public enum ResCode
     InputIsInvalid = -10,
     UserNameOrPasswordIsWrong = -11,
     OldPasswordIsWrong = -12,
+
+    UserNotFound = -50,
 }

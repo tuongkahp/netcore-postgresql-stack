@@ -18,6 +18,9 @@ public class DataContext : DbContext
     public DbSet<GroupUser> GroupUsers { get; set; }
     public DbSet<GroupRole> GroupRoles { get; set; }
 
+    public DbSet<Language> Languages { get; set; }
+    public DbSet<Translation> Translations { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<UserRole>().HasKey(table => new { table.RoleId, table.UserId });
@@ -26,14 +29,14 @@ public class DataContext : DbContext
 
         // Add user
         builder.Entity<User>().HasData(new User[] {
-            new User 
+            new User
             {
-                UserId = 1, 
-                Username = "admin", 
-                PasswordHash = PasswordHelper.GenerateHash("admin", "123456"), 
-                SecurityStamp = "123456", 
-                Email = "", 
-                EmailConfirmed = true, 
+                UserId = 1,
+                Username = "admin",
+                PasswordHash = PasswordHelper.GenerateHash("admin", "123456"),
+                SecurityStamp = "123456",
+                Email = "",
+                EmailConfirmed = true,
                 PhoneNumber = "" ,
                 FullName = "Admin",
                 CreatedDate = DateTime.Now,
@@ -71,6 +74,38 @@ public class DataContext : DbContext
             new GroupRole { GroupId = 1, RoleId = 6 },
             new GroupRole { GroupId = 1, RoleId = 7 },
             new GroupRole { GroupId = 1, RoleId = 8 },
+        });
+
+        InitTranslation(builder);
+    }
+
+    void InitTranslation(ModelBuilder builder)
+    {
+        builder.Entity<Language>().HasData(new Language[] {
+            new Language { LanguageCode= "en", Name="English", Currency = "", DateFormat= "yyyy-mm-dd" },
+            new Language { LanguageCode= "vi", Name="Việt Nam", Currency = "", DateFormat= "dd-mm-yyyy" },
+        });
+
+        builder.Entity<Translation>().HasData(new Translation[] {
+            new Translation { LanguageCode= "en", NameSpace = "error", TranslationCode = "required", TranslationDescription = "This field is required"},
+            new Translation { LanguageCode= "en", NameSpace = "error", TranslationCode = "confirmPasswordIncorrect", TranslationDescription = "Confirm new password is incorrect"},
+            new Translation { LanguageCode= "en", TranslationCode = "confirm", TranslationDescription = "Confirm"},
+            new Translation { LanguageCode= "en", TranslationCode = "cancel", TranslationDescription = "Cancel"},
+            new Translation { LanguageCode= "en", TranslationCode = "oldPassword", TranslationDescription = "Old password"},
+            new Translation { LanguageCode= "en", TranslationCode = "newPassword", TranslationDescription = "New password"},
+            new Translation { LanguageCode= "en", TranslationCode = "confirmPassword", TranslationDescription = "Confirm password"},
+            new Translation { LanguageCode= "en", TranslationCode = "changePassword", TranslationDescription = "Change password"},
+        });
+
+        builder.Entity<Translation>().HasData(new Translation[] {
+            new Translation { LanguageCode= "vi", NameSpace = "error", TranslationCode = "required", TranslationDescription = "Trường này là bắt buộc"},
+            new Translation { LanguageCode= "vi", NameSpace = "error", TranslationCode = "confirmPasswordIncorrect", TranslationDescription = "Xác nhận mật khẩu không chính xác"},
+            new Translation { LanguageCode= "vi", TranslationCode = "confirm", TranslationDescription = "Xác nhận"},
+            new Translation { LanguageCode= "vi", TranslationCode = "cancel", TranslationDescription = "Hủy"},
+            new Translation { LanguageCode= "vi", TranslationCode = "oldPassword", TranslationDescription = "Mật khẩu cũ"},
+            new Translation { LanguageCode= "vi", TranslationCode = "newPassword", TranslationDescription = "Mật khẩu mới"},
+            new Translation { LanguageCode= "vi", TranslationCode = "confirmPassword", TranslationDescription = "Xác nhận mật khẩu"},
+            new Translation { LanguageCode= "vi", TranslationCode = "changePassword", TranslationDescription = "Đổi mật khẩu"},
         });
     }
 }

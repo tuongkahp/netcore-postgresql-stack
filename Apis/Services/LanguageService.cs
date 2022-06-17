@@ -11,13 +11,13 @@ using Repositories;
 
 namespace Api.Services;
 
-public interface IUserService
+public interface ILanguageService
 {
-    GetUsersResDto GetUsers(int page = 1, int count = 10);
-    GetUsersDetailResDto GetUserDetail(long userId);
+    GetUsersResDto GetLanguageConfig(string languageCode);
+    GetUsersResDto GetTranslations(string languageCode);
 }
 
-public class UserService : IUserService
+public class LanguageService : ILanguageService
 {
     private readonly ILogger<UserService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;

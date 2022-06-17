@@ -35,9 +35,9 @@ public class UserController : ControllerBase
 
     [HttpGet]
     [Route("{userId?}")]
-    public IActionResult GetUserDetail(string userId)
+    public GetUsersDetailResDto GetUserDetail(long userId)
     {
-        return Ok(new ResponseDto().Success(_unitOfWork.Users.GetAll().ToList()));
+        return _userService.GetUserDetail(userId);
     }
 
     [HttpPost]

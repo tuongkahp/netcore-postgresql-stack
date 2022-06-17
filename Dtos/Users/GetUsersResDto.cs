@@ -7,6 +7,6 @@ public class GetUsersResDto : ResponseBase<GetUsersResDto>
 
 public class GetUserDataResDto
 {
-    public List<UserDto> ListUsers { get; set; }
+    public List<UserDto> Users { get; set; }
     public int Total { get; set; }
 }

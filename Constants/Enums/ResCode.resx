@@ -132,4 +132,7 @@
   <data name="UserNameOrPasswordIsWrong" xml:space="preserve">
     <value>User name or password is wrong</value>
   </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>User not found</value>
+  </data>
 </root>
