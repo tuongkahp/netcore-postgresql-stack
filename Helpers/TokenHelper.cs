@@ -41,19 +41,4 @@ public static class TokenHelper
             return null;
         }
     }
-
-    //private static TokenInfo DecodeJwtToken(string token)
-    //{
-    //    try
-    //    {
-          
-
-            
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        //Log.Logger.Error($"\n\tGet token info err: {ex.Message} - {ex.StackTrace}");
-    //        return null;
-    //    }
-    //}
 }
