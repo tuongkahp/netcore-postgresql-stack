@@ -41,9 +41,10 @@ public class AuthController : ControllerBase
 
     [HttpPost]
     [Route("refresh-token")]
-    public IActionResult RefreshToken(LoginDto loginDto)
+    //[Authorize(Roles = "RefreshToken")]
+    public IActionResult RefreshToken()
     {
-        return Ok(_authService.Login(loginDto));
+        return Ok(_authService.RefeshToken());
     }
 
     [HttpPost]

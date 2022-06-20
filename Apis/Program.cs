@@ -2,12 +2,14 @@ using Api.Services;
 using Apis.Settings;
 using Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Repositories;
 using Settings.Middlewares;
+using System.Globalization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -91,6 +93,11 @@ if (app.Environment.IsDevelopment())
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(new CultureInfo("en")),
+    SupportedCultures = new[] { new CultureInfo("en"), new CultureInfo("vi") } 
+});
 
 app.MapControllers();
 

@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Có lỗi xảy ra</value>
   </data>
   <data name="Failure" xml:space="preserve">
-    <value>Failure</value>
+    <value>Thất bại</value>
   </data>
   <data name="InputIsInvalid" xml:space="preserve">
-    <value>Input is invalid</value>
+    <value>Dữ liệu không hợp lệ</value>
   </data>
   <data name="OldPasswordIsWrong" xml:space="preserve">
-    <value>Old password is wrong</value>
+    <value>Mật khẩu hiện tại không chính xác</value>
   </data>
   <data name="Success" xml:space="preserve">
-    <value>Success</value>
+    <value>Thành công</value>
   </data>
   <data name="UserNameOrPasswordIsWrong" xml:space="preserve">
-    <value>User name or password is wrong</value>
+    <value>Tên đăng nhập hoặc mật khẩu không chính xác</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
-    <value>User not found</value>
+    <value>Người dùng không tồn tại</value>
   </data>
 </root>

@@ -19,6 +19,7 @@ public interface IAuthService
 {
     ResponseDto RegisterUser(RegisterUserDto registerUserDto);
     LoginResDto Login(LoginDto loginDto);
+    LoginResDto RefeshToken();
     Task<ResponseDto> ChangePassword(ChangePasswordDto changePasswordDto);
     ProfileResDto GetUserProfile();
 }
@@ -97,6 +98,32 @@ public class AuthService : IAuthService
         }
     }
 
+    public LoginResDto RefeshToken()
+    {
+        var res = new LoginResDto();
+
+        try
+        {
+            var tokenInfo = _httpContextAccessor.GetTokenInfo();
+            var user = _unitOfWork.Users.GetBy(x => x.UserId == tokenInfo.UserId).FirstOrDefault();
+
+            if (user == null)
+            {
+                return res.Failure(ResCode.UserNameOrPasswordIsWrong);
+            }
+
+            var token = Authenticate(user);
+            token.RefreshToken = tokenInfo.Token;
+
+            return res.Success(token);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "RefeshToken err");
+            return res.Error();
+        }
+    }
+
     public async Task<ResponseDto> ChangePassword(ChangePasswordDto changePasswordDto)
     {
         var res = new ResponseDto();
@@ -150,20 +177,21 @@ public class AuthService : IAuthService
         }
     }
 
-    private Tokens Authenticate(User users)
+    private Tokens Authenticate(User user)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
-        var lstRoles = _unitOfWork.Users.GetRoles(users.UserId);
+        var lstRoles = _unitOfWork.Users.GetRoles(user.UserId);
 
         var lstClaims = lstRoles.Select(x => new Claim(ClaimTypes.Role, x.RoleName)).ToList();
-        lstClaims.Add(new Claim(ConstJwtCode.UserId, users.UserId.ToString()));
-        lstClaims.Add(new Claim(ClaimTypes.Name, users.FullName));
+        lstClaims.Add(new Claim(ConstJwtCode.UserId, user.UserId.ToString()));
+        lstClaims.Add(new Claim(ClaimTypes.Name, user.FullName));
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var tokenKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
 
         var tokenDescriptor = new SecurityTokenDescriptor
-        {   
+        {
             Subject = new ClaimsIdentity(lstClaims),
-            Expires = DateTime.UtcNow.AddMinutes(10),
+            Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
         };
 
@@ -171,7 +199,8 @@ public class AuthService : IAuthService
 
         var refreshTokenDes = new SecurityTokenDescriptor
         {
-            Expires = DateTime.UtcNow.AddDays(1),
+            Subject = new ClaimsIdentity(new List<Claim>() { new Claim(ConstJwtCode.UserId, user.UserId.ToString()) }),
+            Expires = DateTime.UtcNow.AddDays(7),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
         };
 

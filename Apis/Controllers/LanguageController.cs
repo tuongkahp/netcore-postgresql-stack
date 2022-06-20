@@ -27,10 +27,10 @@ public class LanguageController : ControllerBase
         _userService = userManagementService;
     }
 
-    [HttpGet]
-    [Route("{languageCode?}")]
-    public GetUsersDetailResDto Get(string languageCode)
-    {
-        return _userService.GetUserDetail(userId);
-    }
+    //[HttpGet]
+    //[Route("{languageCode?}")]
+    //public GetUsersDetailResDto Get(string languageCode)
+    //{
+    //    return _userService.GetUserDetail(userId);
+    //}
 }

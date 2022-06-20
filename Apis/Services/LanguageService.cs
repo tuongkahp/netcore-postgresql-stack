@@ -16,7 +16,7 @@ namespace Api.Services;
 public interface ILanguageService
 {
     //GetLanguageConfigResDto GetLanguageConfig(string languageCode);
-    Dictionary<string, object> GetTranslations(string languageCode);
+    //Dictionary<string, object> GetTranslations(string languageCode);
 }
 
 public class LanguageService : ILanguageService
@@ -67,24 +67,24 @@ public class LanguageService : ILanguageService
     //    }
     //}
 
-    public Dictionary<string, object> GetTranslations(string languageCode)
-    {
-        var dictionary = new Dictionary<string, object>();
+    //public Dictionary<string, object> GetTranslations(string languageCode)
+    //{
+    //    var dictionary = new Dictionary<string, object>();
 
-        try
-        {
-            // Get from cache
-            // TODO
-            dictionary = _unitOfWork.Translations
-                .GetBy(x => x.TranslationCode == languageCode.ToLower())
-                .GroupBy(x => x.NameSpace)
-                .ToDictionary(x => x.Key ?? x.FirstOrDefault().TranslationCode, x => (object));
+    //    try
+    //    {
+    //        // Get from cache
+    //        // TODO
+    //        dictionary = _unitOfWork.Translations
+    //            .GetBy(x => x.TranslationCode == languageCode.ToLower())
+    //            .GroupBy(x => x.NameSpace)
+    //            .ToDictionary(x => x.Key ?? x.FirstOrDefault().TranslationCode, x => (object));
 
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "RegisterUser err");
-            return res.Error();
-        }
-    }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "RegisterUser err");
+    //        return res.Error();
+    //    }
+    //}
 }

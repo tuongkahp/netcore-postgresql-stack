@@ -1,4 +1,5 @@
-﻿using System.Resources;
+﻿using System.Globalization;
+using System.Resources;
 
 namespace Constants.Enums;
 
@@ -23,7 +24,7 @@ public static class EnumResourceStringManager
                 }
             }
 
-            return _dicResources[type].GetString(enumValue.ToString());
+            return _dicResources[type].GetString(enumValue.ToString(), CultureInfo.CurrentCulture);
         }
         catch
         {
