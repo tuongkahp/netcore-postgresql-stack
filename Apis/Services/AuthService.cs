@@ -113,7 +113,7 @@ public class AuthService : IAuthService
             }
 
             var token = Authenticate(user);
-            token.RefreshToken = tokenInfo.Token;
+            token.RefreshToken = tokenInfo.Token.Replace("Bearer ", "");
 
             return res.Success(token);
         }
@@ -191,7 +191,7 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(lstClaims),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddMinutes(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
         };
 
