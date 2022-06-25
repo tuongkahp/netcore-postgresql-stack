@@ -7,6 +7,7 @@ public interface IUserRepository : IRepositoryBase<User>
 {
     List<Role> GetRoles(long userId);
     User GetById(long userId);
+    List<User> GetAll();
 }
 
 public class UserRepository : RepositoryBase<User>, IUserRepository
@@ -38,5 +39,24 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
                           select r);
 
         return qGroupRoles.Union(qUserRoles).ToList();
+    }
+
+    public List<User> GetAll()
+    {
+        var lstUsers = new List<User>();
+
+        for (int i = 1; i < 521; i++)
+        {
+            lstUsers.Add(new User()
+            {
+                UserId = i,
+                Username = "user" + i,
+                Email = "user" + i + "@gmail.com",
+                FullName = "Name" + i,
+                Status = Constants.Enums.UserStatus.Active
+            });
+        }
+
+        return lstUsers;
     }
 }
