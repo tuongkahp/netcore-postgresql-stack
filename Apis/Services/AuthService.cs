@@ -18,8 +18,8 @@ namespace Api.Services;
 public interface IAuthService
 {
     ResponseDto RegisterUser(RegisterUserDto registerUserDto);
-    LoginResDto Login(LoginDto loginDto);
-    LoginResDto RefeshToken();
+    Task<ResponseDto> Login(LoginDto loginDto);
+    Task<ResponseDto> RefeshToken(string refreshToken);
     Task<ResponseDto> ChangePassword(ChangePasswordDto changePasswordDto);
     ProfileResDto GetUserProfile();
 }
@@ -73,9 +73,9 @@ public class AuthService : IAuthService
         }
     }
 
-    public LoginResDto Login(LoginDto loginDto)
+    public async Task<ResponseDto> Login(LoginDto loginDto)
     {
-        var res = new LoginResDto();
+        var res = new ResponseDto();
 
         try
         {
@@ -87,7 +87,7 @@ public class AuthService : IAuthService
                 return res.Failure(ResCode.UserNameOrPasswordIsWrong);
             }
 
-            var token = Authenticate(user);
+            var token = await Authenticate(user);
 
             return res.Success(token);
         }
@@ -98,24 +98,27 @@ public class AuthService : IAuthService
         }
     }
 
-    public LoginResDto RefeshToken()
+    public async Task<ResponseDto> RefeshToken(string refreshToken)
     {
-        var res = new LoginResDto();
+        var res = new ResponseDto();
 
         try
         {
-            var tokenInfo = _httpContextAccessor.GetTokenInfo();
-            var user = _unitOfWork.Users.GetBy(x => x.UserId == tokenInfo.UserId).FirstOrDefault();
+            var refreshTokenInfo = TokenHelper.GetRefreshTokenInfo(refreshToken, _jwtSettings.RefreshKey);
+            var user = _unitOfWork.Users.GetBy(x => x.UserId == refreshTokenInfo.UserId).FirstOrDefault();
 
             if (user == null)
-            {
-                return res.Failure(ResCode.UserNameOrPasswordIsWrong);
-            }
+                return res.Failure(ResCode.UserInvalid);
 
-            var token = Authenticate(user);
-            token.RefreshToken = tokenInfo.Token.Replace("Bearer ", "");
+            var userToken = _unitOfWork.UserTokens.GetBy(x => x.RefreshToken == refreshToken).FirstOrDefault();
 
-            return res.Success(token);
+            if (userToken == null)
+                return res.Failure(ResCode.UserInvalid);
+
+            var accessToken = CreateAccessToken(user);
+            await _unitOfWork.SaveChangeAsync();
+
+            return res.Success(new { AccessToken = accessToken });
         }
         catch (Exception ex)
         {
@@ -177,7 +180,35 @@ public class AuthService : IAuthService
         }
     }
 
-    private Tokens Authenticate(User user)
+    private async Task<Tokens> Authenticate(User user)
+    {
+        var accessToken = CreateAccessToken(user);
+        var refreshToken = CreateRefreshToken(user);
+
+        var token = new UserToken()
+        {
+            RefreshToken = refreshToken,
+            UserId = user.UserId,
+        };
+
+        var userToken = _unitOfWork.UserTokens.GetBy(x => x.UserTokenId == user.UserId).FirstOrDefault();
+
+        if (userToken == null)
+            await _unitOfWork.UserTokens.AddAsync(token);
+        else
+        {
+            userToken.RefreshToken = refreshToken;
+            await _unitOfWork.SaveChangeAsync();
+        }
+
+        return new Tokens
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
+    }
+
+    private string CreateAccessToken(User user)
     {
         var lstRoles = _unitOfWork.Users.GetRoles(user.UserId);
 
@@ -186,26 +217,28 @@ public class AuthService : IAuthService
         lstClaims.Add(new Claim(ClaimTypes.Name, user.FullName));
 
         var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenKey = Encoding.UTF8.GetBytes(_jwtSettings.Key);
-
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(lstClaims),
-            Expires = DateTime.UtcNow.AddMinutes(1),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.RefreshExpiredTime),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key)), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+        var accessToken = tokenHandler.CreateToken(tokenDescriptor);
+        return tokenHandler.WriteToken(accessToken);
+    }
 
+    private string CreateRefreshToken(User user)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
         var refreshTokenDes = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new List<Claim>() { new Claim(ConstJwtCode.UserId, user.UserId.ToString()) }),
-            Expires = DateTime.UtcNow.AddDays(7),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddSeconds(_jwtSettings.RefreshExpiredTime),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.RefreshKey)), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var refreshToken = tokenHandler.CreateToken(refreshTokenDes);
-
-        return new Tokens { Token = tokenHandler.WriteToken(token), RefreshToken = tokenHandler.WriteToken(refreshToken) };
+        return tokenHandler.WriteToken(refreshToken);
     }
 }

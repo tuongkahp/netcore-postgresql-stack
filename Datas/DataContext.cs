@@ -17,6 +17,7 @@ public class DataContext : DbContext
     public DbSet<Group> Groups { get; set; }
     public DbSet<GroupUser> GroupUsers { get; set; }
     public DbSet<GroupRole> GroupRoles { get; set; }
+    public DbSet<UserToken> UserTokens { get; set; }
 
     //public DbSet<Language> Languages { get; set; }
     //public DbSet<Translation> Translations { get; set; }

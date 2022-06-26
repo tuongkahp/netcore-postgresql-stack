@@ -11,4 +11,5 @@ public enum ResCode
     OldPasswordIsWrong = -12,
 
     UserNotFound = -50,
+    UserInvalid = -51,
 }

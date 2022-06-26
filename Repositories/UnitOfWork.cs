@@ -11,6 +11,7 @@ public interface IUnitOfWork
     IGroupRepository Groups { get; }
     ITranslationRepository Translations { get; }
     ILanguageRepository Languages { get; }
+    IUserTokenRepository UserTokens { get; }
     Task<int> SaveChangeAsync();
 }
 
@@ -22,6 +23,7 @@ public class UnitOfWork : IUnitOfWork
     private IGroupRepository _group;
     private ITranslationRepository _translation;
     private ILanguageRepository _language;
+    private IUserTokenRepository _userToken;
 
     public UnitOfWork(DataContext dbContext)
     {
@@ -33,6 +35,7 @@ public class UnitOfWork : IUnitOfWork
     public IGroupRepository Groups => _group ?? (_group = new GroupRepository(_dbContext));
     public ITranslationRepository Translations => _translation ?? (_translation = new TranslationRepository(_dbContext));
     public ILanguageRepository Languages => _language ?? (_language = new LanguageRepository(_dbContext));
+    public IUserTokenRepository UserTokens => _userToken ?? (_userToken = new UserTokenRepository(_dbContext));
 
     public async Task<int> SaveChangeAsync()
     {

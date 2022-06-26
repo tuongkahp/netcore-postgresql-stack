@@ -34,17 +34,22 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("login")]
-    public IActionResult Login(LoginDto loginDto)
+    public async Task<IActionResult> Login(LoginDto loginDto)
     {
-        return Ok(_authService.Login(loginDto));
+        return Ok(await _authService.Login(loginDto));
     }
 
+    [AllowAnonymous]
     [HttpPost]
     [Route("refresh-token")]
-    //[Authorize(Roles = "RefreshToken")]
-    public IActionResult RefreshToken()
+    public async Task<IActionResult> RefreshToken(Tokens tokens)
     {
-        return Ok(_authService.RefeshToken());
+        var refreshResult = await _authService.RefeshToken(tokens.RefreshToken);
+
+        if (refreshResult.ResCode != Constants.Enums.ResCode.Success)
+            return Unauthorized(refreshResult);
+
+        return Ok(refreshResult);
     }
 
     [HttpPost]
