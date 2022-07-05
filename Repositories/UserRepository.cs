@@ -7,7 +7,8 @@ public interface IUserRepository : IRepositoryBase<User>
 {
     List<Role> GetRoles(long userId);
     User GetById(long userId);
-    List<User> GetAll();
+    Task UpdateRoles(long userId, List<int> roleIds);
+    Task UpdateGroups(long userId, List<long> groupIds);
 }
 
 public class UserRepository : RepositoryBase<User>, IUserRepository
@@ -41,22 +42,30 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
         return qGroupRoles.Union(qUserRoles).ToList();
     }
 
-    public List<User> GetAll()
+    public async Task UpdateRoles(long userId, List<int> roleIds)
     {
-        var lstUsers = new List<User>();
+        var userRoles = _dbContext.UserRoles.Where(x => x.UserId == userId).ToList();
+        if (userRoles.Count > 0)
+            _dbContext.UserRoles.RemoveRange(userRoles);
 
-        for (int i = 1; i < 521; i++)
+        await _dbContext.UserRoles.AddRangeAsync(roleIds.Select(x => new UserRole()
         {
-            lstUsers.Add(new User()
-            {
-                UserId = i,
-                Username = "user" + i,
-                Email = "user" + i + "@gmail.com",
-                FullName = "Name" + i,
-                Status = Constants.Enums.UserStatus.Active
-            });
-        }
+            RoleId = x,
+            UserId = userId,
+        }));
+    }
 
-        return lstUsers;
+    public async Task UpdateGroups(long userId, List<long> groupIds)
+    {
+        var groupUser = _dbContext.GroupUsers.Where(x => x.UserId == userId).ToList();
+
+        if (groupUser.Count > 0)
+            _dbContext.GroupUsers.RemoveRange(groupUser);
+
+        await _dbContext.GroupUsers.AddRangeAsync(groupIds.Select(x => new GroupUser()
+        {
+            GroupId = x,
+            UserId = userId,
+        }));
     }
 }

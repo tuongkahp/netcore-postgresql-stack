@@ -15,6 +15,8 @@ public interface IUserService
 {
     GetUsersResDto GetUsers(int page = 1, int count = 10);
     GetUsersDetailResDto GetUserDetail(long userId);
+    ResponseDto CreateUser(CreateUserReqDto createUserReqDto);
+    ResponseDto UpdateUser(UpdateUserReqDto updateUserReqDto);
 }
 
 public class UserService : IUserService
@@ -74,12 +76,83 @@ public class UserService : IUserService
             if (user == null)
                 return res.Failure(ResCode.OldPasswordIsWrong);
 
-            res.Data = _mapper.Map<UserDto>(user);
+            var group = _unitOfWork.Groups.GetByUser(userId);
+            var lstRoles = _unitOfWork.Users.GetRoles(user.UserId);
+
+            //var lstRolesFromGroup = _unitOfWork.Roles.GetByGroup(group.GroupId);
+            //var lstRolesFromUser = _unitOfWork.Roles.GetByUser(userId);
+
+            res.Data = new()
+            {
+                User = _mapper.Map<UserDto>(user),
+                Roles = _mapper.Map<List<RoleDto>>(lstRoles),
+                Group = _mapper.Map<GroupDto>(group)
+            };
+
             return res.Success();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "RegisterUser err");
+            return res.Error();
+        }
+    }
+
+    public ResponseDto CreateUser(CreateUserReqDto createUserReqDto)
+    {
+        var res = new ResponseDto();
+
+        try
+        {
+            if (_unitOfWork.Users.GetBy(x => x.Username == createUserReqDto.Username).Any())
+            {
+                return res.Failure(ResCode.UserNameIsExist);
+            }
+
+            var user = _mapper.Map<User>(createUserReqDto);
+            user.SecurityStamp = Guid.NewGuid().ToString();
+            user.PasswordHash = PasswordHelper.GenerateHash(createUserReqDto.Password, user.SecurityStamp);
+            _unitOfWork.Users.Add(user);
+            _unitOfWork.Users.UpdateRoles(user.UserId, createUserReqDto.RoleIds);
+            _unitOfWork.Users.UpdateGroups(user.UserId, createUserReqDto.GroupIds);
+            return res.Success();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "CreateUser err");
+            return res.Error();
+        }
+    }
+
+    public ResponseDto UpdateUser(UpdateUserReqDto updateUserReqDto)
+    {
+        var res = new ResponseDto();
+
+        try
+        {
+            var user = _unitOfWork.Users.GetBy(x => x.UserId == updateUserReqDto.UserId).FirstOrDefault();
+
+            if (user == null)
+            {
+                return res.Failure(ResCode.UserNotFound);
+            }
+
+            user = _mapper.Map<User>(updateUserReqDto);
+
+            if (!string.IsNullOrEmpty(updateUserReqDto.Password))
+            {
+                user.SecurityStamp = Guid.NewGuid().ToString();
+                user.PasswordHash = PasswordHelper.GenerateHash(updateUserReqDto.Password, user.SecurityStamp);
+            }
+
+            _unitOfWork.Users.Add(user);
+            _unitOfWork.Users.UpdateRoles(user.UserId, updateUserReqDto.RoleIds);
+            _unitOfWork.Users.UpdateGroups(user.UserId, updateUserReqDto.GroupIds);
+            return res.Success();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "CreateUser err");
             return res.Error();
         }
     }

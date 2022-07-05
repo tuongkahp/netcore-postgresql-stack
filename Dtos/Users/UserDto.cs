@@ -11,4 +11,5 @@ public class UserDto
     public string PhoneNumber { get; set; }
     public DateTime CreatedDate { get; set; }
     public UserStatus Status { get; set; }
+    //public List<RoleDto> Roles { get; set; }
 }

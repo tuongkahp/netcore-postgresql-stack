@@ -8,7 +8,7 @@ namespace Api.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("api/auth")]
+[Route("api/v1/auth")]
 public class AuthController : ControllerBase
 {
     private readonly ILogger<AuthController> _logger;

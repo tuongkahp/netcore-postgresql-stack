@@ -12,4 +12,5 @@ public enum ResCode
 
     UserNotFound = -50,
     UserInvalid = -51,
+    UserNameIsExist = -52,
 }

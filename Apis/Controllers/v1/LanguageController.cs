@@ -9,7 +9,7 @@ using Repositories;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/languages")]
+[Route("api/v1/languages")]
 public class LanguageController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;

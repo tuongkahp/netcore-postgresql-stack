@@ -8,7 +8,7 @@ using Repositories;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/groups")]
+[Route("api/v1/groups")]
 public class GroupController : ControllerBase
 {
     private readonly ILogger<GroupController> _logger;
@@ -40,7 +40,7 @@ public class GroupController : ControllerBase
     }
 
     [HttpPost]
-    public ResponseDto AddUser(RegisterUserDto registerUserDto)
+    public ResponseDto AddUser(CreateUserReqDto registerUserDto)
     {
         return new();
     }

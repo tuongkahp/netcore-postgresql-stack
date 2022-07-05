@@ -9,7 +9,7 @@ using Repositories;
 namespace Api.Controllers;
 
 [ApiController]
-[Route("api/users")]
+[Route("api/v1/users")]
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
@@ -28,7 +28,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public GetUsersResDto GetUsers(int page, int count)
+    public GetUsersResDto GetUsers(int page = 1, int count = 10)
     {
         return _userService.GetUsers(page, count);
     }
@@ -41,16 +41,16 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public ResponseDto AddUser(RegisterUserDto registerUserDto)
+    public ResponseDto CreateUser(CreateUserReqDto createUserReqDto)
     {
-        return new ResponseDto();
+        return _userService.CreateUser(createUserReqDto);
     }
 
     [HttpPut]
     [Route("{userId?}")]
-    public IActionResult EditUser([FromBody] LoginDto loginDto, [FromQuery] long userId)
+    public ResponseDto UpdateUser(UpdateUserReqDto updateUserReqDto)
     {
-        return Ok();
+        return _userService.UpdateUser(updateUserReqDto);
     }
 
     [HttpDelete]

@@ -9,6 +9,7 @@ public interface IRepositoryBase<TEntity> : IDisposable where TEntity : class
     int Add(TEntity Entity);
     Task<int> AddAsync(TEntity Entity);
     int AddRange(List<TEntity> Entities);
+    Task<int> AddRangeAsync(List<TEntity> Entities);
     IQueryable<TEntity> GetBy(Expression<Func<TEntity, bool>> predicate);
     int Update(TEntity Entity);
     int Delete(int Id);
@@ -44,6 +45,13 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
     public virtual int AddRange(List<TEntity> Entities)
     {
         _dbContext.Set<TEntity>().AddRange(Entities);
+        var result = _dbContext.SaveChanges();
+        return result;
+    }
+
+    public virtual async Task<int> AddRangeAsync(List<TEntity> Entities)
+    {
+        await _dbContext.Set<TEntity>().AddRangeAsync(Entities);
         var result = _dbContext.SaveChanges();
         return result;
     }

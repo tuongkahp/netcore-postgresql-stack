@@ -9,7 +9,9 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<User, RegisterUserDto>().ReverseMap();
+        CreateMap<User, CreateUserReqDto>().ReverseMap();
         CreateMap<User, UserDto>().ReverseMap();
+        CreateMap<Role, RoleDto>().ReverseMap();
+        CreateMap<Group, GroupDto>().ReverseMap();
     }
 }

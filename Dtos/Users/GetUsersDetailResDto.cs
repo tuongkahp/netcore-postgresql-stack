@@ -2,5 +2,12 @@
 
 public class GetUsersDetailResDto : ResponseBase<GetUsersDetailResDto>
 {
-    public UserDto Data { get; set; }
+    public UserDataResDto Data { get; set; }
+}
+
+public class UserDataResDto
+{
+    public UserDto User { get; set; }
+    public List<RoleDto> Roles { get; set; }
+    public GroupDto Group { get; set; }
 }
