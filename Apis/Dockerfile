@@ -3,19 +3,26 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Api.csproj", "."]
-RUN dotnet restore "./Api.csproj"
+COPY ["Apis/Apis.csproj", "Apis/"]
+COPY ["Datas/Datas.csproj", "Datas/"]
+COPY ["Helpers/Helpers.csproj", "Helpers/"]
+COPY ["Dtos/Dtos.csproj", "Dtos/"]
+COPY ["Constants/Constants.csproj", "Constants/"]
+COPY ["Settings/Settings.csproj", "Settings/"]
+COPY ["Repositories/Repositories.csproj", "Repositories/"]
+RUN dotnet restore "Apis/Apis.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "Api.csproj" -c Release -o /app/build
+WORKDIR "/src/Apis"
+RUN dotnet build "Apis.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Apis.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Api.dll"]
+ENTRYPOINT ["dotnet", "Apis.dll"]

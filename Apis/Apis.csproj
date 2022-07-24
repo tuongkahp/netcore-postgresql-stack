@@ -6,6 +6,8 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
 		<DockerfileContext>.</DockerfileContext>
+		<UserSecretsId>6f6497e1-85e7-4a14-b230-88aa10e50d83</UserSecretsId>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,6 +29,10 @@
 	  <ProjectReference Include="..\Helpers\Helpers.csproj" />
 	  <ProjectReference Include="..\Repositories\Repositories.csproj" />
 	  <ProjectReference Include="..\Settings\Settings.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="..\.dockerignore" />
 	</ItemGroup>
 
 </Project>

@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Apis", "Apis\Apis.csproj", "{557F5EA3-1A1F-4E5F-B480-A2FC89B25520}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apis", "Apis\Apis.csproj", "{557F5EA3-1A1F-4E5F-B480-A2FC89B25520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Datas", "Datas\Datas.csproj", "{FA765D28-B85F-4A6E-895F-10563ECB62C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Datas", "Datas\Datas.csproj", "{FA765D28-B85F-4A6E-895F-10563ECB62C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dtos", "Dtos\Dtos.csproj", "{53B34ABF-B2D3-435E-A452-70FDFCDCA6B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dtos", "Dtos\Dtos.csproj", "{53B34ABF-B2D3-435E-A452-70FDFCDCA6B7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositories", "Repositories\Repositories.csproj", "{E9F8770C-8881-430B-9EC3-715D4E25249F}"
 EndProject
@@ -15,9 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Commons", "Commons\Commons.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Helpers", "Helpers\Helpers.csproj", "{A5AB91CA-EFAB-476F-B60A-0441868A2AE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Settings", "Settings\Settings.csproj", "{1C4CE520-C636-40AD-883F-2D464ACFB92D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Settings", "Settings\Settings.csproj", "{1C4CE520-C636-40AD-883F-2D464ACFB92D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Constants", "Constants\Constants.csproj", "{8B90C5A0-4539-4F51-B3DC-AEB9D8C55985}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Constants", "Constants\Constants.csproj", "{8B90C5A0-4539-4F51-B3DC-AEB9D8C55985}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{77A8B277-565B-4B3E-93B3-9FCB66C35902}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{8B90C5A0-4539-4F51-B3DC-AEB9D8C55985}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B90C5A0-4539-4F51-B3DC-AEB9D8C55985}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B90C5A0-4539-4F51-B3DC-AEB9D8C55985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77A8B277-565B-4B3E-93B3-9FCB66C35902}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77A8B277-565B-4B3E-93B3-9FCB66C35902}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77A8B277-565B-4B3E-93B3-9FCB66C35902}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77A8B277-565B-4B3E-93B3-9FCB66C35902}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

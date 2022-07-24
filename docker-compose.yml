@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  apis:
+    build: 
+      context: . 
+      dockerfile: ./Apis/Dockerfile 
+    ports:
+      - 5005:80
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=123456aA@
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - E:/docker-volume/postgresql:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
