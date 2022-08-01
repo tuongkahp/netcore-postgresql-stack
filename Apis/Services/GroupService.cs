@@ -8,27 +8,29 @@ using Dtos.Users;
 using Commons.Helpers;
 using Microsoft.Extensions.Options;
 using Repositories;
+using Dtos.Groups;
 
 namespace Api.Services;
 
-public interface IUserService
+public interface IGroupService
 {
-    GetUsersResDto GetUsers(int page = 1, int count = 10);
-    GetUsersDetailResDto GetUserDetail(long userId);
-    ResponseDto CreateUser(CreateUserReqDto createUserReqDto);
-    ResponseDto UpdateUser(UpdateUserReqDto updateUserReqDto);
+    //GetUsersResDto GetUsers(int page = 1, int count = 10);
+    //GetUsersDetailResDto GetUserDetail(long userId);
+    //ResponseDto CreateUser(CreateUserReqDto createUserReqDto);
+    //ResponseDto UpdateUser(UpdateUserReqDto updateUserReqDto);
+    GetGroupsResDto GetGroups();
 }
 
-public class UserService : IUserService
+public class GroupService : IGroupService
 {
-    private readonly ILogger<UserService> _logger;
+    private readonly ILogger<GroupService> _logger;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
     private readonly JwtSettings _jwtSettings;
 
-    public UserService(
-        ILogger<UserService> logger,
+    public GroupService(
+        ILogger<GroupService> logger,
         IHttpContextAccessor httpContextAccessor,
         IUnitOfWork unitOfWork,
         IMapper mapper,
@@ -42,25 +44,18 @@ public class UserService : IUserService
         _jwtSettings = jwtSettings.Value;
     }
 
-    public GetUsersResDto GetUsers(int page = 1, int count = 10)
+    public GetGroupsResDto GetGroups()
     {
-        var res = new GetUsersResDto();
+        var res = new GetGroupsResDto();
 
         try
         {
-            var qUser = _unitOfWork.Users.GetAll();
-
-            res.Data = new()
-            {
-                Total = qUser.Count(),
-                Users = qUser.Skip((page - 1) * count).Take(count).Select(x => _mapper.Map<UserDto>(x)).ToList()
-            };
-
+            res.Data = _unitOfWork.Groups.GetAll().Select(x => _mapper.Map<GetGroupsDataResDto>(x)).ToList();
             return res.Success();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "RegisterUser err");
+            _logger.LogError(ex, "GetGroups err");
             return res.Error();
         }
     }

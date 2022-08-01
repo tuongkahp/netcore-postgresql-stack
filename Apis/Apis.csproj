@@ -24,9 +24,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Commons\Commons.csproj" />
 	  <ProjectReference Include="..\Datas\Datas.csproj" />
 	  <ProjectReference Include="..\Dtos\Dtos.csproj" />
-	  <ProjectReference Include="..\Helpers\Helpers.csproj" />
 	  <ProjectReference Include="..\Repositories\Repositories.csproj" />
 	  <ProjectReference Include="..\Settings\Settings.csproj" />
 	</ItemGroup>

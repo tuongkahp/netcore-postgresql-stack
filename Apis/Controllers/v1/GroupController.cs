@@ -1,6 +1,7 @@
 using Api.Services;
 using Dtos;
 using Dtos.Auth;
+using Dtos.Groups;
 using Dtos.Users;
 using Microsoft.AspNetCore.Mvc;
 using Repositories;
@@ -13,23 +14,23 @@ public class GroupController : ControllerBase
 {
     private readonly ILogger<GroupController> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IUserService _userService;
+    private readonly IGroupService _groupService;
 
     public GroupController(
         ILogger<GroupController> logger,
         IUnitOfWork unitOfWork,
-        IUserService userService
+        IGroupService groupService
         )
     {
         _logger = logger;
         _unitOfWork = unitOfWork;
-        _userService = userService;
+        _groupService = groupService;
     }
 
     [HttpGet]
-    public GetUsersResDto Get(int page, int count)
+    public GetGroupsResDto Get()
     {
-        return _userService.GetUsers(page, count);
+        return _groupService.GetGroups();
     }
 
     [HttpGet]
